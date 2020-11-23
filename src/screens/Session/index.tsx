@@ -1,6 +1,14 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet, ScrollView, FlatList} from 'react-native';
 import ScreenWrapper from '../../components/shared/ScreenWrapper';
+
+const formatTime = (milliseconds) => {
+  const seconds = Math.floor(milliseconds / 1000) % 60;
+  const minutes = Math.floor(seconds / 60);
+  console.log(minutes);
+  const hours = Math.floor(minutes / 60);
+  return `${hours}:${minutes}:${seconds}`;
+};
 
 const Row = ({item}) => {
   const notification = item;
@@ -18,10 +26,30 @@ const Row = ({item}) => {
 };
 
 const Session = ({route}) => {
+  let timer;
   const movie = route.params;
+  const [elapsedTime, setElapsedTime] = useState(0);
+
+  const startTimer = () => {
+    const startTime = Date.now();
+    timer = setInterval(() => {
+      setElapsedTime(Date.now() - startTime);
+    }, 1000);
+  };
+
+  useEffect(() => {
+    startTimer();
+    // scheduleNotifications()
+    return () => {
+      // cleanup [clear timer and notifications ]
+      clearInterval(timer);
+    };
+  }, []);
   return (
     <ScreenWrapper>
       <Text>Session screen</Text>
+      <Text>Time: {formatTime(elapsedTime)}</Text>
+      <Text>Elapsed Time: {elapsedTime}</Text>
       <FlatList
         data={movie.notifications}
         renderItem={Row}
