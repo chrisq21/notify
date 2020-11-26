@@ -1,7 +1,7 @@
 /**
  * @format
  */
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   Button,
@@ -10,10 +10,19 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import ScreenWrapper from '../../components/shared/ScreenWrapper';
 import data from '../../lib/mockData';
+import {removeItem} from '../../lib/helpers/localStorage';
 
 const Home = ({navigation}) => {
+  useEffect(() => {
+    const requestNotificationPermissions = async () => {
+      PushNotificationIOS.requestPermissions();
+    };
+    requestNotificationPermissions();
+  }, []);
+
   return (
     <ScreenWrapper>
       <ScrollView style={styles.container}>
@@ -31,8 +40,8 @@ const Home = ({navigation}) => {
           );
         })}
         <Button
-          onPress={() => navigation.navigate('Reference')}
-          title="See Reference"
+          onPress={() => removeItem('session')}
+          title="Remove Session"
           color="#841584"
           accessibilityLabel="See Reference"
         />

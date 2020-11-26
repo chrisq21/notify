@@ -1,13 +1,21 @@
-import React, {useEffect, useState} from 'react';
-import {Text, View, StyleSheet, ScrollView, FlatList} from 'react-native';
+import React, {useEffect, useState, useRef} from 'react';
+import {
+  Text,
+  View,
+  StyleSheet,
+  ScrollView,
+  FlatList,
+  Button,
+} from 'react-native';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import ScreenWrapper from '../../components/shared/ScreenWrapper';
+import * as Storage from '../../lib/helpers/localStorage';
 
 const formatTime = (milliseconds) => {
-  const seconds = Math.floor(milliseconds / 1000) % 60;
+  const seconds = Math.floor(milliseconds / 1000);
   const minutes = Math.floor(seconds / 60);
-  console.log(minutes);
   const hours = Math.floor(minutes / 60);
-  return `${hours}:${minutes}:${seconds}`;
+  return `${hours}:${minutes}:${seconds % 60}`;
 };
 
 const Row = ({item}) => {
@@ -26,25 +34,84 @@ const Row = ({item}) => {
 };
 
 const Session = ({route}) => {
-  let timer;
+  const timer = useRef(null);
   const movie = route.params;
   const [elapsedTime, setElapsedTime] = useState(0);
 
-  const startTimer = () => {
-    const startTime = Date.now();
-    timer = setInterval(() => {
+  const startTimer = (startTime: number) => {
+    timer.current = setInterval(() => {
       setElapsedTime(Date.now() - startTime);
-    }, 1000);
+    }, 500);
+  };
+
+  const scheduleNotifications = () => {
+    movie?.notifications.forEach(({title, description, startTime}) => {
+      const notificationRequest = {
+        id: `${title}-${startTime}`, // change to unique id
+        title,
+        body: description,
+        fireDate: Date.now() + startTime,
+      };
+      PushNotificationIOS.addNotificationRequest(notificationRequest);
+      console.log('Schedule notification for: ', startTime / 1000);
+    });
+  };
+
+  const cancelTimer = () => {
+    if (timer.current) {
+      clearInterval(timer.current);
+      timer.current = null;
+    }
+  };
+
+  const cancelNotifications = () => {
+    PushNotificationIOS.removeAllPendingNotificationRequests();
+  };
+
+  const handleStartButtonPress = async () => {
+    // TODO move to it's own function
+    // Clear notifications and existing session if it exists
+    const existingSession = await Storage.getItem('session');
+    if (existingSession) {
+      cancelNotifications();
+      await Storage.removeItem('session');
+    }
+
+    const now = Date.now();
+    startTimer(now);
+    scheduleNotifications();
+
+    await Storage.setItem('session', {
+      inProgress: true,
+      startTime: now,
+      movieID: movie.title,
+    });
+  };
+
+  // TODO maybe this should be pause / play?
+  const handleStopButtonPress = async () => {
+    cancelTimer();
+    setElapsedTime(0);
+    cancelNotifications();
+
+    await Storage.removeItem('session');
   };
 
   useEffect(() => {
-    startTimer();
-    // scheduleNotifications()
-    return () => {
-      // cleanup [clear timer and notifications ]
-      clearInterval(timer);
+    const setup = async () => {
+      const session = await Storage.getItem('session');
+      console.log('session', session);
+      // TODO match session's movieID against movie id instead of title
+      if (session?.inProgress && session?.movieID === movie.title) {
+        console.log('Continute session!');
+        startTimer(session.startTime);
+      }
     };
+    setup();
+
+    return cancelTimer;
   }, []);
+
   return (
     <ScreenWrapper>
       <Text>Session screen</Text>
@@ -53,8 +120,10 @@ const Session = ({route}) => {
       <FlatList
         data={movie.notifications}
         renderItem={Row}
-        keyExtractor={(item) => item.startTime}
+        keyExtractor={(item) => `${item.startTime}`}
       />
+      <Button title={'Start'} onPress={handleStartButtonPress} />
+      <Button title={'Stop'} onPress={handleStopButtonPress} />
     </ScreenWrapper>
   );
 };
