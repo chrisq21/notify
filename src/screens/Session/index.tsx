@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useContext} from 'react';
 import {
   Text,
   View,
@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import ScreenWrapper from '../../components/shared/ScreenWrapper';
-import * as Storage from '../../lib/helpers/localStorage';
+import {SessionContext} from '../../../App';
 
 const formatTime = (milliseconds) => {
   const seconds = Math.floor(milliseconds / 1000);
@@ -33,10 +33,11 @@ const Row = ({item}) => {
   );
 };
 
-const Session = ({route}) => {
+const Session = ({route, navigation}) => {
   const timer = useRef(null);
   const movie = route.params;
   const [elapsedTime, setElapsedTime] = useState(0);
+  const {session, stopSession, startSession} = useContext(SessionContext);
 
   const startTimer = (startTime: number) => {
     timer.current = setInterval(() => {
@@ -71,20 +72,18 @@ const Session = ({route}) => {
   const handleStartButtonPress = async () => {
     // TODO move to it's own function
     // Clear notifications and existing session if it exists
-    const existingSession = await Storage.getItem('session');
-    if (existingSession) {
+    if (session) {
       cancelNotifications();
-      await Storage.removeItem('session');
+      stopSession();
     }
 
     const now = Date.now();
     startTimer(now);
     scheduleNotifications();
 
-    await Storage.setItem('session', {
-      inProgress: true,
+    startSession({
       startTime: now,
-      movieID: movie.title,
+      movie,
     });
   };
 
@@ -94,16 +93,13 @@ const Session = ({route}) => {
     setElapsedTime(0);
     cancelNotifications();
 
-    await Storage.removeItem('session');
+    stopSession();
   };
 
   useEffect(() => {
     const setup = async () => {
-      const session = await Storage.getItem('session');
-      console.log('session', session);
       // TODO match session's movieID against movie id instead of title
-      if (session?.inProgress && session?.movieID === movie.title) {
-        console.log('Continute session!');
+      if (session?.movie?.id === movie.title) {
         startTimer(session.startTime);
       }
     };
@@ -113,10 +109,9 @@ const Session = ({route}) => {
   }, []);
 
   return (
-    <ScreenWrapper>
+    <ScreenWrapper navigation={navigation}>
       <Text>Session screen</Text>
       <Text>Time: {formatTime(elapsedTime)}</Text>
-      <Text>Elapsed Time: {elapsedTime}</Text>
       <FlatList
         data={movie.notifications}
         renderItem={Row}

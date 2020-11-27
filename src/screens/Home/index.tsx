@@ -1,7 +1,7 @@
 /**
  * @format
  */
-import React, {useState, useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {
   Text,
   Button,
@@ -13,9 +13,11 @@ import {
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import ScreenWrapper from '../../components/shared/ScreenWrapper';
 import data from '../../lib/mockData';
-import {removeItem} from '../../lib/helpers/localStorage';
+import {SessionContext} from '../../../App';
 
 const Home = ({navigation}) => {
+  const {stopSession} = useContext(SessionContext);
+
   useEffect(() => {
     const requestNotificationPermissions = async () => {
       PushNotificationIOS.requestPermissions();
@@ -24,7 +26,7 @@ const Home = ({navigation}) => {
   }, []);
 
   return (
-    <ScreenWrapper>
+    <ScreenWrapper navigation={navigation}>
       <ScrollView style={styles.container}>
         {data.map((movie) => {
           return (
@@ -40,7 +42,7 @@ const Home = ({navigation}) => {
           );
         })}
         <Button
-          onPress={() => removeItem('session')}
+          onPress={stopSession}
           title="Remove Session"
           color="#841584"
           accessibilityLabel="See Reference"

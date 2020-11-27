@@ -84,7 +84,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center
 didReceiveNotificationResponse:(UNNotificationResponse *)response
          withCompletionHandler:(void (^)(void))completionHandler
-{
+{ 
   [RNCPushNotificationIOS didReceiveNotificationResponse:response];
 }
 

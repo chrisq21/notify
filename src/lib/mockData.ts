@@ -1,5 +1,6 @@
 export default [
   {
+    id: 'Incredibles 2 (1 sec, 10 sec)',
     genre: 'Action',
     grade: 'D+',
     title: 'Incredibles 2 (1 sec, 10 sec)',
@@ -20,6 +21,7 @@ export default [
     ],
   },
   {
+    id: 'Princess Bride (1 min, 10 min)',
     genre: 'Drama',
     grade: 'A-',
     title: 'Princess Bride (1 min, 10 min)',
@@ -40,6 +42,7 @@ export default [
     ],
   },
   {
+    id: 'Star Wars Rise of Skywalker(1 hr, 2hr)',
     genre: 'Sci-Fi',
     grade: 'F',
     title: 'Star Wars Rise of Skywalker(1 hr, 2hr)',

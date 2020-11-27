@@ -8,22 +8,34 @@
  * @format
  */
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Home, Session, Reference} from './src/screens';
 
 const Stack = createStackNavigator();
+export const SessionContext = React.createContext(null);
 
 const App = () => {
+  const [session, setSession] = useState(null);
+  const startSession = (newSession: object) => {
+    setSession(newSession);
+  };
+
+  const stopSession = () => {
+    setSession(null);
+  };
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Session" component={Session} />
-        <Stack.Screen name="Reference" component={Reference} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SessionContext.Provider value={{session, startSession, stopSession}}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Session" component={Session} />
+          <Stack.Screen name="Reference" component={Reference} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SessionContext.Provider>
   );
 };
 
