@@ -18,16 +18,16 @@ export const SessionContext = React.createContext(null);
 
 const App = () => {
   const [session, setSession] = useState(null);
-  const startSession = (newSession: object) => {
+  const createSession = (newSession: object) => {
     setSession(newSession);
   };
 
-  const stopSession = () => {
+  const deleteSession = () => {
     setSession(null);
   };
 
   return (
-    <SessionContext.Provider value={{session, startSession, stopSession}}>
+    <SessionContext.Provider value={{session, createSession, deleteSession}}>
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Home" component={Home} />

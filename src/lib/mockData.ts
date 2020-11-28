@@ -9,13 +9,13 @@ export default [
       {
         description: 'Heavy flashing (1 sec)',
         endTime: 1200,
-        startTime: 1000, // 1 sec
+        fireTime: 1000, // 1 sec
         title: 'Flashing for 30 seconds',
       },
       {
         description: 'Heavy flashing (10 sec)',
         endTime: 11000,
-        startTime: 10000, // 10 sec
+        fireTime: 10000, // 10 sec
         title: 'Crazy stuff here',
       },
     ],
@@ -30,13 +30,13 @@ export default [
       {
         description: 'Heavy flashing (1 min)',
         endTime: 9100,
-        startTime: 60000, // 1 min
+        fireTime: 60000, // 1 min
         title: 'Light flashing',
       },
       {
         description: 'Heavy flashing (10 mins)',
         endTime: 9100,
-        startTime: 600000, // 10 mins
+        fireTime: 600000, // 10 mins
         title: 'Light flashing',
       },
     ],
@@ -51,13 +51,13 @@ export default [
       {
         description: 'Heavy flashing (1 hr)',
         endTime: 500,
-        startTime: 3600000, // 1 hour
+        fireTime: 3600000, // 1 hour
         title: 'Stuff happens',
       },
       {
         description: 'Heavy flashing (2 hr)',
         endTime: 500,
-        startTime: 7200000, // 2 hour
+        fireTime: 7200000, // 2 hour
         title: 'Stuff happens',
       },
     ],

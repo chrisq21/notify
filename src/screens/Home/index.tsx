@@ -16,7 +16,7 @@ import data from '../../lib/mockData';
 import {SessionContext} from '../../../App';
 
 const Home = ({navigation}) => {
-  const {stopSession} = useContext(SessionContext);
+  const {deleteSession} = useContext(SessionContext);
 
   useEffect(() => {
     const requestNotificationPermissions = async () => {
@@ -42,7 +42,7 @@ const Home = ({navigation}) => {
           );
         })}
         <Button
-          onPress={stopSession}
+          onPress={deleteSession}
           title="Remove Session"
           color="#841584"
           accessibilityLabel="See Reference"

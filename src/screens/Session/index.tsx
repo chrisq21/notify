@@ -10,13 +10,7 @@ import {
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import ScreenWrapper from '../../components/shared/ScreenWrapper';
 import {SessionContext} from '../../../App';
-
-const formatTime = (milliseconds) => {
-  const seconds = Math.floor(milliseconds / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  return `${hours}:${minutes}:${seconds % 60}`;
-};
+import {formatTime} from './helpers';
 
 const Row = ({item}) => {
   const notification = item;
@@ -26,7 +20,7 @@ const Row = ({item}) => {
         <View style={styles.separator} />
         <View style={styles.linkContainer}>
           <Text style={styles.link}>{notification.title}</Text>
-          <Text style={styles.link}>{notification.startTime / 1000}s</Text>
+          <Text style={styles.link}>{notification.fireTime / 1000}s</Text>
         </View>
       </ScrollView>
     </View>
@@ -37,24 +31,25 @@ const Session = ({route, navigation}) => {
   const timer = useRef(null);
   const movie = route.params;
   const [elapsedTime, setElapsedTime] = useState(0);
-  const {session, stopSession, startSession} = useContext(SessionContext);
+  const {session, deleteSession, createSession} = useContext(SessionContext);
 
-  const startTimer = (startTime: number) => {
+  const startTimer = (startDate: number) => {
     timer.current = setInterval(() => {
-      setElapsedTime(Date.now() - startTime);
+      setElapsedTime(Date.now() - startDate);
     }, 500);
   };
 
-  const scheduleNotifications = () => {
-    movie?.notifications.forEach(({title, description, startTime}) => {
+  const scheduleNotifications = (now: number) => {
+    movie?.notifications.forEach(({title, description, fireTime}) => {
+      const fireDate = now + fireTime;
       const notificationRequest = {
-        id: `${title}-${startTime}`, // change to unique id
+        // TODO use notification id
+        id: `${movie.id}-${title}-${fireTime}`,
         title,
         body: description,
-        fireDate: Date.now() + startTime,
+        fireDate,
       };
       PushNotificationIOS.addNotificationRequest(notificationRequest);
-      console.log('Schedule notification for: ', startTime / 1000);
     });
   };
 
@@ -69,41 +64,36 @@ const Session = ({route, navigation}) => {
     PushNotificationIOS.removeAllPendingNotificationRequests();
   };
 
-  const handleStartButtonPress = async () => {
-    // TODO move to it's own function
-    // Clear notifications and existing session if it exists
+  const startSession = async () => {
+    /* delete old session */
     if (session) {
       cancelNotifications();
-      stopSession();
+      deleteSession();
     }
-
+    /* create new session */
     const now = Date.now();
     startTimer(now);
-    scheduleNotifications();
-
-    startSession({
-      startTime: now,
+    scheduleNotifications(now);
+    createSession({
+      startDate: now,
       movie,
     });
   };
 
-  // TODO maybe this should be pause / play?
-  const handleStopButtonPress = async () => {
+  const stopSession = async () => {
     cancelTimer();
-    setElapsedTime(0);
     cancelNotifications();
-
-    stopSession();
+    setElapsedTime(0);
+    deleteSession();
   };
 
   useEffect(() => {
-    const setup = async () => {
-      // TODO match session's movieID against movie id instead of title
-      if (session?.movie?.id === movie.title) {
-        startTimer(session.startTime);
+    const setupTimer = async () => {
+      if (session?.movie?.id === movie.id) {
+        startTimer(session.startDate);
       }
     };
-    setup();
+    setupTimer();
 
     return cancelTimer;
   }, []);
@@ -115,10 +105,10 @@ const Session = ({route, navigation}) => {
       <FlatList
         data={movie.notifications}
         renderItem={Row}
-        keyExtractor={(item) => `${item.startTime}`}
+        keyExtractor={(item) => `${item.fireTime}`}
       />
-      <Button title={'Start'} onPress={handleStartButtonPress} />
-      <Button title={'Stop'} onPress={handleStopButtonPress} />
+      <Button title={'Start'} onPress={startSession} />
+      <Button title={'Stop'} onPress={stopSession} />
     </ScreenWrapper>
   );
 };

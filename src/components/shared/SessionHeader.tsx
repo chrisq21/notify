@@ -6,21 +6,17 @@ import {TouchableHighlight} from 'react-native-gesture-handler';
 const SessionHeader = ({navigation}) => {
   const context = useContext(SessionContext);
   const session = context?.session;
-  console.log('session:', session);
 
-  if (session) {
-    return (
-      <TouchableHighlight
-        activeOpacity={0.6}
-        underlayColor="#b7f2b7"
-        onPress={() => navigation.push('Session', session.movie)}>
-        <View style={styles.sessionBar}>
-          <Text style={styles.text}>{session.movie.title} in progress</Text>
-        </View>
-      </TouchableHighlight>
-    );
-  }
-  return null;
+  return session ? (
+    <TouchableHighlight
+      activeOpacity={0.6}
+      underlayColor="#b7f2b7"
+      onPress={() => navigation.push('Session', session.movie)}>
+      <View style={styles.sessionBar}>
+        <Text style={styles.text}>{session.movie.title} in progress</Text>
+      </View>
+    </TouchableHighlight>
+  ) : null;
 };
 
 export default SessionHeader;
