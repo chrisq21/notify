@@ -1,20 +1,36 @@
 export default [
   {
+    id: 'Mando',
+    title: 'Mando',
+    startDescription: `Press "Start" when "LucasFilm" appears on screen.`,
+    endTime: 2450000,
+    notifications: [
+      {
+        description: 'Light flashing for about 2 seconds',
+        fireTime: 53000,
+        title: 'Light flashing',
+      },
+      {
+        description: 'Light flashing for about 2 seconds',
+        fireTime: 1614000,
+        title: 'Light flashing',
+      },
+    ],
+  },
+  {
     id: 'Incredibles 2 (1 sec, 10 sec)',
     genre: 'Action',
     grade: 'D+',
     title: 'Incredibles 2 (1 sec, 10 sec)',
-    totalTime: 50000,
+    endTime: 60000, // 1 min
     notifications: [
       {
         description: 'Heavy flashing (1 sec)',
-        endTime: 1200,
         fireTime: 1000, // 1 sec
         title: 'Flashing for 30 seconds',
       },
       {
         description: 'Heavy flashing (10 sec)',
-        endTime: 11000,
         fireTime: 10000, // 10 sec
         title: 'Crazy stuff here',
       },
@@ -25,17 +41,15 @@ export default [
     genre: 'Drama',
     grade: 'A-',
     title: 'Princess Bride (1 min, 10 min)',
-    totalTime: 100000,
+    endTime: 1020000, // 17 min
     notifications: [
       {
         description: 'Heavy flashing (1 min)',
-        endTime: 9100,
         fireTime: 60000, // 1 min
         title: 'Light flashing',
       },
       {
         description: 'Heavy flashing (10 mins)',
-        endTime: 9100,
         fireTime: 600000, // 10 mins
         title: 'Light flashing',
       },
@@ -46,17 +60,15 @@ export default [
     genre: 'Sci-Fi',
     grade: 'F',
     title: 'Star Wars Rise of Skywalker(1 hr, 2hr)',
-    totalTime: 3000,
+    endTime: 9000000, // 2.5 hr
     notifications: [
       {
         description: 'Heavy flashing (1 hr)',
-        endTime: 500,
         fireTime: 3600000, // 1 hour
         title: 'Stuff happens',
       },
       {
         description: 'Heavy flashing (2 hr)',
-        endTime: 500,
         fireTime: 7200000, // 2 hour
         title: 'Stuff happens',
       },

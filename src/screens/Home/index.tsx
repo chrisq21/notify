@@ -65,31 +65,20 @@ const Colors = {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 32,
     paddingHorizontal: 24,
   },
   linkContainer: {
     flexWrap: 'wrap',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 8,
+    paddingVertical: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: 'white',
   },
   link: {
     flex: 2,
     fontSize: 18,
     fontWeight: '400',
-    color: Colors.primary,
-  },
-  description: {
-    flex: 3,
-    paddingVertical: 16,
-    fontWeight: '400',
-    fontSize: 18,
-    color: Colors.dark,
-  },
-  separator: {
-    backgroundColor: Colors.light,
-    height: 1,
+    color: 'white',
   },
 });

@@ -9,23 +9,20 @@ import {
 } from 'react-native';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import ScreenWrapper from '../../components/shared/ScreenWrapper';
+import Track from './track';
 import {SessionContext} from '../../../App';
-import {formatTime} from './helpers';
 
-const Row = ({item}) => {
-  const notification = item;
-  return (
-    <View>
-      <ScrollView style={styles.container}>
-        <View style={styles.separator} />
-        <View style={styles.linkContainer}>
-          <Text style={styles.link}>{notification.title}</Text>
-          <Text style={styles.link}>{notification.fireTime / 1000}s</Text>
-        </View>
-      </ScrollView>
-    </View>
-  );
-};
+import styled from '@emotion/native';
+
+const Container = styled.View`
+  height: 100%;
+  padding: 10px 20px;
+`;
+
+const NotificationText = styled.Text`
+  color: white;
+  margin: 10px 0;
+`;
 
 const Session = ({route, navigation}) => {
   const timer = useRef(null);
@@ -100,56 +97,21 @@ const Session = ({route, navigation}) => {
 
   return (
     <ScreenWrapper navigation={navigation}>
-      <Text>Session screen</Text>
-      <Text>Time: {formatTime(elapsedTime)}</Text>
-      <FlatList
-        data={movie.notifications}
-        renderItem={Row}
-        keyExtractor={(item) => `${item.fireTime}`}
-      />
-      <Button title={'Start'} onPress={startSession} />
-      <Button title={'Stop'} onPress={stopSession} />
+      <Container>
+        <NotificationText>{movie?.title}</NotificationText>
+        <NotificationText>{movie?.startDescription}</NotificationText>
+        <NotificationText>{elapsedTime}</NotificationText>
+        <Track
+          endTime={movie?.endTime}
+          notifications={movie?.notifications}
+          elapsedTime={elapsedTime}
+          isSessionActive={!!session}
+        />
+        <Button title={'Start'} onPress={startSession} />
+        <Button title={'Stop'} onPress={stopSession} />
+      </Container>
     </ScreenWrapper>
   );
 };
 
 export default Session;
-
-const Colors = {
-  primary: '#1292B4',
-  white: '#FFF',
-  lighter: '#F3F3F3',
-  light: '#DAE1E7',
-  dark: '#444',
-  black: '#000',
-};
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  linkContainer: {
-    flexWrap: 'wrap',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    paddingVertical: 8,
-  },
-  link: {
-    flex: 2,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.primary,
-  },
-  description: {
-    flex: 3,
-    paddingVertical: 16,
-    fontWeight: '400',
-    fontSize: 18,
-    color: Colors.dark,
-  },
-  separator: {
-    backgroundColor: Colors.light,
-    height: 1,
-  },
-});

@@ -29,7 +29,16 @@ const App = () => {
   return (
     <SessionContext.Provider value={{session, createSession, deleteSession}}>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+          initialRouteName="Home"
+          screenOptions={{
+            headerStyle: {elevation: 0, backgroundColor: 'rgb(32, 24, 40)'},
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              color: 'white',
+            },
+            cardStyle: {backgroundColor: 'rgb(32, 24, 40)'},
+          }}>
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Session" component={Session} />
           <Stack.Screen name="Reference" component={Reference} />

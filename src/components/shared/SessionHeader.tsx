@@ -7,16 +7,17 @@ const SessionHeader = ({navigation}) => {
   const context = useContext(SessionContext);
   const session = context?.session;
 
-  return session ? (
+  return (
     <TouchableHighlight
+      style={{opacity: session ? 1 : 0}}
       activeOpacity={0.6}
       underlayColor="#b7f2b7"
-      onPress={() => navigation.push('Session', session.movie)}>
+      onPress={() => navigation.push('Session', session?.movie)}>
       <View style={styles.sessionBar}>
-        <Text style={styles.text}>{session.movie.title} in progress</Text>
+        <Text style={styles.text}>{session?.movie?.title} in progress</Text>
       </View>
     </TouchableHighlight>
-  ) : null;
+  );
 };
 
 export default SessionHeader;

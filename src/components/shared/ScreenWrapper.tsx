@@ -6,7 +6,9 @@ const ScreenWrapper = ({children, navigation}) => (
   <>
     <StatusBar barStyle="dark-content" />
     <SessionHeader navigation={navigation} />
-    <SafeAreaView>{children}</SafeAreaView>
+    <SafeAreaView style={{flex: 1, backgroundColor: 'rgb(32, 24, 40)'}}>
+      {children}
+    </SafeAreaView>
   </>
 );
 
