@@ -136,9 +136,6 @@ const Track = ({elapsedTime, endTime, notifications, isSessionActive}) => {
               onPress={() => handleNotificationPress(notification)}>
               <View>
                 <NotificationTitle>{notification.title}</NotificationTitle>
-                <NotificationTime>
-                  {formatTime(notification.fireTime)}
-                </NotificationTime>
               </View>
             </NotificationContainer>
           );

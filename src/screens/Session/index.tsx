@@ -1,12 +1,5 @@
 import React, {useEffect, useState, useRef, useContext} from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  ScrollView,
-  FlatList,
-  Button,
-} from 'react-native';
+
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import ScreenWrapper from '../../components/shared/ScreenWrapper';
 import Track from './track';
@@ -24,13 +17,27 @@ const NotificationText = styled.Text`
   margin: 10px 0;
 `;
 
+const ToggleButtonWrapper = styled.TouchableOpacity`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ToggleButton = styled.Image`
+  height: 100px;
+  width: 100px;
+`;
+
 const Session = ({route, navigation}) => {
   const timer = useRef(null);
   const movie = route.params;
   const [elapsedTime, setElapsedTime] = useState(0);
   const {session, deleteSession, createSession} = useContext(SessionContext);
 
+  const [isActive, setIsActive] = useState(false);
+
   const startTimer = (startDate: number) => {
+    setIsActive(true);
     timer.current = setInterval(() => {
       setElapsedTime(Date.now() - startDate);
     }, 500);
@@ -81,6 +88,7 @@ const Session = ({route, navigation}) => {
     cancelTimer();
     cancelNotifications();
     setElapsedTime(0);
+    setIsActive(false);
     deleteSession();
   };
 
@@ -98,8 +106,6 @@ const Session = ({route, navigation}) => {
   return (
     <ScreenWrapper navigation={navigation}>
       <Container>
-        <NotificationText>{movie?.title}</NotificationText>
-        <NotificationText>{movie?.startDescription}</NotificationText>
         <NotificationText>{elapsedTime}</NotificationText>
         <Track
           endTime={movie?.endTime}
@@ -107,8 +113,15 @@ const Session = ({route, navigation}) => {
           elapsedTime={elapsedTime}
           isSessionActive={!!session}
         />
-        <Button title={'Start'} onPress={startSession} />
-        <Button title={'Stop'} onPress={stopSession} />
+        <ToggleButtonWrapper onPress={isActive ? stopSession : startSession}>
+          <ToggleButton
+            source={
+              isActive
+                ? require('../../assets/images/pause.png')
+                : require('../../assets/images/play.png')
+            }
+          />
+        </ToggleButtonWrapper>
       </Container>
     </ScreenWrapper>
   );
