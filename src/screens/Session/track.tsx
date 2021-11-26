@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {View, Text, Animated, Easing, Modal} from 'react-native';
+import {View, Text, Animated, Easing, Modal, Image} from 'react-native';
 import styled from '@emotion/native';
 import {formatTime} from '../../lib/helpers/formatTime';
 
@@ -7,9 +7,17 @@ const Container = styled.View`
   flex: 1;
 `;
 
-const NotificationContainer = styled.TouchableHighlight`
+const NotificationContainer = styled.View`
   position: absolute;
-  width: 90%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const NotificationButton = styled.TouchableHighlight`
+  width: 95%;
   padding: 10px 18px;
   background: rgba(67, 59, 70, 0.8);
   shadow-color: black;
@@ -19,14 +27,39 @@ const NotificationContainer = styled.TouchableHighlight`
   border-radius: 8px;
 `;
 
+const NotificationInnerContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const NotificationMarker = styled.View`
+  width: 14px;
+  height: 14px;
+  background: #c0bec4;
+  border-radius: 100px;
+  margin-right: -7px;
+`;
+
+const DescriptionContainer = styled.View`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+`;
+
 const NotificationTitle = styled.Text`
   color: white;
-  font-weight: bold;
+  margin-bottom: 5px;
 `;
 
 const NotificationTime = styled.Text`
   color: rgb(152, 142, 150);
-  font-weight: bold;
+`;
+
+const NotificationArrow = styled.Image`
+  width: 32px;
+  height: 32px;
 `;
 
 const TrackLine = styled(Animated.View)`
@@ -94,7 +127,6 @@ const Track = ({elapsedTime, endTime, notifications, isSessionActive}) => {
   const trackPosition = (containerHeight * elapsedTime) / endTime;
 
   const handleNotificationPress = (notification) => {
-    console.log('notification: ', notification);
     setNotificationModalData(notification);
   };
 
@@ -130,13 +162,22 @@ const Track = ({elapsedTime, endTime, notifications, isSessionActive}) => {
         notifications.map((notification) => {
           const top = `${Math.floor((notification.fireTime / endTime) * 100)}%`;
           return (
-            <NotificationContainer
-              style={{top}}
-              key={notification.fireTime}
-              onPress={() => handleNotificationPress(notification)}>
-              <View>
-                <NotificationTitle>{notification.title}</NotificationTitle>
-              </View>
+            <NotificationContainer style={{top}} key={notification.fireTime}>
+              <NotificationButton
+                onPress={() => handleNotificationPress(notification)}>
+                <NotificationInnerContainer>
+                  <DescriptionContainer>
+                    <NotificationTitle>{notification.title}</NotificationTitle>
+                    <NotificationTime>
+                      {formatTime(notification.fireTime)}
+                    </NotificationTime>
+                  </DescriptionContainer>
+                  <NotificationArrow
+                    source={require('../../assets/images/down.png')}
+                  />
+                </NotificationInnerContainer>
+              </NotificationButton>
+              <NotificationMarker />
             </NotificationContainer>
           );
         })}

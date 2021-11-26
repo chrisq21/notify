@@ -106,7 +106,6 @@ const Session = ({route, navigation}) => {
   return (
     <ScreenWrapper navigation={navigation}>
       <Container>
-        <NotificationText>{elapsedTime}</NotificationText>
         <Track
           endTime={movie?.endTime}
           notifications={movie?.notifications}
