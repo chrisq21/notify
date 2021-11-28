@@ -1,7 +1,8 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {View, Text, Animated, Easing, Modal, Image} from 'react-native';
+import React, {useState} from 'react';
+import {Animated} from 'react-native';
 import styled from '@emotion/native';
 import {formatTime} from '../../lib/helpers/formatTime';
+import NotificationModal from './notificationModal';
 
 const Container = styled.View`
   flex: 1;
@@ -108,19 +109,6 @@ const VerticalTrackContainer = styled.View`
   border-radius: 10px;
 `;
 
-const ModalCenteredView = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ModalContentView = styled.TouchableHighlight`
-  background-color: white;
-  border: 1px solid black;
-  border-radius: 10px;
-  padding: 30px;
-`;
-
 const Track = ({elapsedTime, endTime, notifications, isSessionActive}) => {
   const [containerHeight, setContainerHeight] = useState(0);
   const [notificationModalData, setNotificationModalData] = useState(null);
@@ -148,16 +136,10 @@ const Track = ({elapsedTime, endTime, notifications, isSessionActive}) => {
         <TrackMarkerLarge />
         <TrackMarkerSmall />
       </TrackLine>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={!!notificationModalData}>
-        <ModalCenteredView>
-          <ModalContentView onPress={closeModal}>
-            <Text>{notificationModalData?.description}</Text>
-          </ModalContentView>
-        </ModalCenteredView>
-      </Modal>
+      <NotificationModal
+        notificationModalData={notificationModalData}
+        closeModal={closeModal}
+      />
       {notifications &&
         notifications.map((notification) => {
           const top = `${Math.floor((notification.fireTime / endTime) * 100)}%`;
