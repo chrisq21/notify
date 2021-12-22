@@ -42,7 +42,7 @@ export const TrackMarkerLarge = styled.View`
   border-radius: 1000px;
 `;
 
-export const VerticalTrackContainer = styled.View`
+export const VerticalBar = styled.View`
   position: absolute;
   right: -3px;
   top: 0;

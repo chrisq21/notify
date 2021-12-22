@@ -2,15 +2,8 @@ import React, {useState} from 'react';
 
 import Notification from './notification';
 import NotificationModal from './notificationModal';
-
-import {
-  Container,
-  VerticalTrackContainer,
-  TrackLine,
-  TrackMarkerMedium,
-  TrackMarkerLarge,
-  TrackMarkerSmall,
-} from './style';
+import StatusMarker from './statusMarker';
+import {Container, VerticalBar} from './style';
 
 const Track = ({elapsedTime, endTime, notifications}) => {
   const [containerHeight, setContainerHeight] = useState(0);
@@ -28,19 +21,10 @@ const Track = ({elapsedTime, endTime, notifications}) => {
   return (
     <Container
       onLayout={(event) => {
-        console.log('height', event.nativeEvent.layout.height * 3);
-
         setContainerHeight(event.nativeEvent.layout.height);
       }}>
-      <VerticalTrackContainer />
-      <TrackLine
-        style={{
-          transform: [{translateY: trackPosition}],
-        }}>
-        <TrackMarkerMedium />
-        <TrackMarkerLarge />
-        <TrackMarkerSmall />
-      </TrackLine>
+      <VerticalBar />
+      <StatusMarker trackPosition={trackPosition} />
       <NotificationModal
         notificationModalData={notificationModalData}
         closeModal={closeModal}
