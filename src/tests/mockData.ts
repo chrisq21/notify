@@ -37,20 +37,20 @@ export default [
     ],
   },
   {
-    id: 'Princess Bride (1 min, 10 min)',
+    id: 'Princess Bride (30 min)',
     genre: 'Drama',
     grade: 'A-',
-    title: 'Princess Bride (1 min, 10 min)',
-    endTime: 1020000, // 17 min
+    title: 'Princess Bride (30 min)',
+    endTime: 1800000, // 30 min
     notifications: [
       {
-        description: 'Heavy flashing (1 min)',
-        fireTime: 60000, // 1 min
+        description: 'Heavy flashing',
+        fireTime: 240000, // 4 min
         title: 'Light flashing',
       },
       {
-        description: 'Heavy flashing (10 mins)',
-        fireTime: 600000, // 10 mins
+        description: 'Heavy flashing',
+        fireTime: 1260000, // 21 mins
         title: 'Light flashing',
       },
     ],
