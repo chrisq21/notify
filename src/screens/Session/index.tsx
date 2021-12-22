@@ -35,7 +35,7 @@ const Session = ({route, navigation}) => {
     setIsActive(true);
     timer.current = setInterval(() => {
       setElapsedTime(Date.now() - startDate);
-    }, 500);
+    }, 50);
   };
 
   const scheduleNotifications = (now: number) => {

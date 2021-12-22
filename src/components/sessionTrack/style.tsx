@@ -32,7 +32,7 @@ export const TrackMarkerMedium = styled.View`
   border-radius: 1000px;
 `;
 
-export const TrackMarkerLarge = styled.View`
+export const TrackMarkerLarge = styled(Animated.View)`
   position: absolute;
   top: -17px;
   right: -17px;
