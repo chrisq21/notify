@@ -10,7 +10,7 @@ export const NotificationContainer = styled.View`
 `;
 
 export const NotificationButton = styled.TouchableHighlight`
-  width: 95%;
+  width: 84%;
   padding: 10px 18px;
   background: rgba(67, 59, 70, 0.8);
   shadow-color: black;

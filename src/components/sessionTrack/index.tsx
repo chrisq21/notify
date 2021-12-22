@@ -3,7 +3,13 @@ import React, {useState} from 'react';
 import Notification from './notification';
 import NotificationModal from './notificationModal';
 import StatusMarker from './statusMarker';
-import {Container, VerticalBar} from './style';
+import {
+  Container,
+  VerticalBar,
+  IntervalMarker,
+  IntervalMarkerText,
+} from './style';
+import {Text} from 'react-native';
 
 const Track = ({elapsedTime, endTime, notifications}) => {
   const [containerHeight, setContainerHeight] = useState(0);
@@ -18,6 +24,9 @@ const Track = ({elapsedTime, endTime, notifications}) => {
     setNotificationModalData(null);
   };
 
+  const intervalMarkerTime = 900000; // 15 min
+  const numIntervalMarkers = Math.floor(endTime / intervalMarkerTime);
+
   return (
     <Container
       onLayout={(event) => {
@@ -29,6 +38,21 @@ const Track = ({elapsedTime, endTime, notifications}) => {
         notificationModalData={notificationModalData}
         closeModal={closeModal}
       />
+      {Array(numIntervalMarkers)
+        .fill(1)
+        .map((_, index) => {
+          const top = `${Math.floor(
+            ((intervalMarkerTime * index + 1) / endTime) * 100,
+          )}%`;
+          const mins = Math.floor((intervalMarkerTime * index + 1) / 1000 / 60);
+          if (mins === 0) return;
+          return (
+            <IntervalMarker style={{top}}>
+              <IntervalMarkerText>{mins}min</IntervalMarkerText>
+            </IntervalMarker>
+          );
+        })}
+
       {notifications &&
         notifications.map((notificationData) => {
           const top = `${Math.floor(

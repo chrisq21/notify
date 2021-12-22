@@ -51,3 +51,19 @@ export const VerticalBar = styled.View`
   background-color: #4a4157;
   border-radius: 10px;
 `;
+
+export const IntervalMarker = styled.View`
+  position: absolute;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-end;
+  color: white;
+`;
+
+export const IntervalMarkerText = styled.Text`
+  color: rgba(255, 255, 255, 0.4);
+  padding-right: 10px;
+  font-size: 12px;
+`;
