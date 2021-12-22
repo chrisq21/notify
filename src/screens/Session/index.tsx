@@ -2,7 +2,7 @@ import React, {useEffect, useState, useRef, useContext} from 'react';
 
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import ScreenWrapper from '../../components/shared/ScreenWrapper';
-import Track from './track';
+import Track from '../../components/sessionTrack';
 import {SessionContext} from '../../../App';
 
 import styled from '@emotion/native';
@@ -10,11 +10,6 @@ import styled from '@emotion/native';
 const Container = styled.View`
   height: 100%;
   padding: 10px 20px;
-`;
-
-const NotificationText = styled.Text`
-  color: white;
-  margin: 10px 0;
 `;
 
 const ToggleButtonWrapper = styled.TouchableOpacity`

@@ -1,7 +1,7 @@
 import React from 'react';
-import {Modal, Image} from 'react-native';
+import {Modal} from 'react-native';
 import styled from '@emotion/native';
-import {formatTime} from '../../lib/helpers/formatTime';
+import {formatTime} from '../../../utils/formatTime';
 
 const Container = styled.View`
   flex: 1;
@@ -69,7 +69,7 @@ const NotificationModal = ({notificationModalData, closeModal}) => {
               {notificationModalData?.description}
             </DescriptionText>
             <DescriptionImage
-              source={require('../../assets/images/joker.png')}
+              source={require('../../../assets/images/joker.png')}
             />
             <DescriptionText>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do

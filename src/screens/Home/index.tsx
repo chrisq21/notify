@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import ScreenWrapper from '../../components/shared/ScreenWrapper';
-import data from '../../lib/mockData';
+import data from '../../tests/mockData';
 import {SessionContext} from '../../../App';
 
 const Home = ({navigation}) => {
