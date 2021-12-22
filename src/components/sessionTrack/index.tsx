@@ -1,59 +1,16 @@
 import React, {useState} from 'react';
-import {Animated, ScrollView} from 'react-native';
-import styled from '@emotion/native';
+
 import Notification from './notification';
 import NotificationModal from './notificationModal';
 
-const Container = styled.View`
-  flex: 1;
-  height: 500px;
-`;
-
-const TrackLine = styled(Animated.View)`
-  height: 2px;
-  background-color: #4a4157;
-  z-index: 2;
-`;
-
-const TrackMarkerSmall = styled.View`
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  width: 10px;
-  height: 10px;
-  background-color: white;
-  border-radius: 1000px;
-`;
-
-const TrackMarkerMedium = styled.View`
-  position: absolute;
-  top: -13px;
-  right: -13px;
-  width: 26px;
-  height: 26px;
-  background-color: rgb(150, 60, 187);
-  border-radius: 1000px;
-`;
-
-const TrackMarkerLarge = styled.View`
-  position: absolute;
-  top: -17px;
-  right: -17px;
-  width: 34px;
-  height: 34px;
-  background-color: rgba(123, 49, 153, 0.4);
-  border-radius: 1000px;
-`;
-
-const VerticalTrackContainer = styled.View`
-  position: absolute;
-  right: -3px;
-  top: 0;
-  height: 100%;
-  width: 6px;
-  background-color: #4a4157;
-  border-radius: 10px;
-`;
+import {
+  Container,
+  VerticalTrackContainer,
+  TrackLine,
+  TrackMarkerMedium,
+  TrackMarkerLarge,
+  TrackMarkerSmall,
+} from './style';
 
 const Track = ({elapsedTime, endTime, notifications}) => {
   const [containerHeight, setContainerHeight] = useState(0);
